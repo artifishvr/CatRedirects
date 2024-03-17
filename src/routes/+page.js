@@ -10,5 +10,6 @@ export async function load() {
 
     return {
         cats: cats.documents,
+        randomfeatured: cats.documents[Math.floor(Math.random() * cats.documents.length)]
     };
 };
