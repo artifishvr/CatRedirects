@@ -24,7 +24,7 @@
 </script>
 
 <div class="bg-zinc-900 text-white py-20 flex h-screen text-center">
-    <div class="m-auto rounded-lg drop-shadow-xl bg-zinc-800 border-zinc-700 p-6">
+    <div class="m-auto p-6">
         <h1 class="text-4xl font-bold">{data.randomfeatured.name}</h1>
         <p class="text-sm">Chosen randomly</p>
         {#if !pauseredirect}
