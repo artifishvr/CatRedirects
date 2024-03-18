@@ -7,14 +7,14 @@
 
     export let data;
 
-    let seconds = 10;
+    let seconds = 6;
 
     let pauseredirect = false;
 
     onMount(() => {
         const interval = setInterval(() => {
             if (pauseredirect || dev) {
-                seconds = 10;
+                seconds = 6;
                 return;
             }
             seconds -= 1;
