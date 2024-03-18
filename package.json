@@ -1,6 +1,6 @@
 {
 	"name": "gaycats",
-	"version": "0.2.0",
+	"version": "1.0.5",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
@@ -20,6 +20,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@vercel/analytics": "^1.2.2",
 		"appwrite": "^14.0.0",
 		"flowbite-svelte": "^0.44.24",
 		"flowbite-svelte-icons": "^1.4.3"
