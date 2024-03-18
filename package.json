@@ -23,6 +23,6 @@
 		"@vercel/analytics": "^1.2.2",
 		"appwrite": "^14.0.0",
 		"flowbite-svelte": "^0.44.24",
-		"flowbite-svelte-icons": "^1.4.3"
+		"flowbite-svelte-icons": "^1.4.5"
 	}
 }
