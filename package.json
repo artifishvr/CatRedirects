@@ -9,14 +9,14 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-vercel": "^5.2.0",
-		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/kit": "^2.5.5",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"autoprefixer": "^10.4.19",
 		"postcss": "^8.4.38",
 		"postcss-load-config": "^5.0.2",
 		"svelte": "^4.2.7",
-		"tailwindcss": "^3.3.6",
-		"vite": "^5.2.6"
+		"tailwindcss": "^3.4.3",
+		"vite": "^5.2.7"
 	},
 	"type": "module",
 	"dependencies": {
