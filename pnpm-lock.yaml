@@ -9,8 +9,8 @@ dependencies:
     specifier: ^1.2.2
     version: 1.2.2
   appwrite:
-    specifier: ^14.0.0
-    version: 14.0.0
+    specifier: ^14.0.1
+    version: 14.0.1
   flowbite-svelte:
     specifier: ^0.44.24
     version: 0.44.24(svelte@4.2.14)
@@ -678,8 +678,8 @@ packages:
       svg.select.js: 3.0.1
     dev: false
 
-  /appwrite@14.0.0:
-    resolution: {integrity: sha512-8X0wbA0JX51f2DVSbpYTV2fN5f6vSGYpWBVSXCKfnNPMiBgeBwcDxuLDxnHUApAsSIDUkfZomeJWE8Q2Rbnpbw==}
+  /appwrite@14.0.1:
+    resolution: {integrity: sha512-ORlvfqVif/2K3qKGgGiGfMP33Zwm+xxB1fIC4Lm3sojOkDd8u8YvgKQO0Meq5UXb8Dc0Rl66Z7qlGBAfRQ04bA==}
     dependencies:
       cross-fetch: 3.1.5
       isomorphic-form-data: 2.0.0
