@@ -1,10 +1,7 @@
 <script>
     import '../app.pcss';
-    import { inject } from '@vercel/analytics';
     import { dev } from '$app/environment';
     import { onMount } from 'svelte';
-
-    inject({ mode: dev ? 'development' : 'production' });
 
     onMount(() => {
         const analyticsScript = document.createElement('script');
