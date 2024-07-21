@@ -11,8 +11,40 @@
     </h1>
 
     {#each data.result as domain}
-      <p>{domain.host}</p>
-      <p>{domain.url}</p>
+      <div class="bg-gray-900">
+        <input
+          id="host-{domain.id}"
+          type="text"
+          class="text-black"
+          value={domain.host.replace(".gaycat.online", "")} />
+        <p>.gaycat.online</p>
+        <input
+          id="url-{domain.id}"
+          type="text"
+          class="text-black"
+          value={domain.url} />
+        <button
+          on:click={async () => {
+            let host = document.getElementById(`host-${domain.id}`).value;
+            let url = document.getElementById(`url-${domain.id}`).value;
+
+            const response = await fetch("/api/update", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                host: host,
+                url: url,
+              }),
+            });
+
+            if (!response.ok) {
+              console.error("Update failed:", response.statusText);
+            }
+            console.log(response);
+          }}>update</button>
+      </div>
     {/each}
   </div>
 </div>
