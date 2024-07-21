@@ -7,6 +7,7 @@
   import * as Dialog from "$lib/components/ui/dialog";
   import { Label } from "$lib/components/ui/label/index.js";
   import { toast } from "svelte-sonner";
+  import Trash2 from "lucide-svelte/icons/trash-2";
 </script>
 
 <div class="bg-zinc-900 text-white py-24 flex text-center">
@@ -41,35 +42,62 @@
                 placeholder="URL"
                 class="max-w-xs"
                 value={domain.url} /></Table.Cell>
-            <Table.Cell class="text-right"
-              ><Button
-                variant="secondary"
-                on:click={async () => {
-                  let host = document.getElementById(`host-${domain.id}`).value;
-                  let url = document.getElementById(`url-${domain.id}`).value;
+            <Table.Cell class="text-right">
+              <div class="flex gap-2">
+                <Button
+                  variant="secondary"
+                  on:click={async () => {
+                    let host = document.getElementById(
+                      `host-${domain.id}`
+                    ).value;
+                    let url = document.getElementById(`url-${domain.id}`).value;
 
-                  if (url == domain.url)
-                    return toast.warning("Nothing to update!");
+                    if (url == domain.url)
+                      return toast.warning("Nothing to update!");
 
-                  const response = await fetch("/api/update", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      host: host,
-                      url: url,
-                    }),
-                  });
+                    const response = await fetch("/api/redirects/update", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        host: host,
+                        url: url,
+                      }),
+                    });
 
-                  if (!response.ok) {
-                    toast.error(`Failed to Update: ${response.statusText}`);
-                  } else {
-                    toast.success("Successfully Updated!");
-                  }
-                  console.log(response);
-                }}>Update</Button
-              ></Table.Cell>
+                    if (!response.ok) {
+                      toast.error(`Failed to Update: ${response.statusText}`);
+                    } else {
+                      toast.success("Successfully Updated!");
+                    }
+                  }}>Update</Button>
+                <Button
+                  variant="destructive"
+                  on:click={async () => {
+                    const response = await fetch("/api/redirects/delete", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        id: domain.id,
+                      }),
+                    });
+
+                    if (!response.ok) {
+                      toast.error(
+                        `${(await response.text()) || response.statusText}`
+                      );
+                    } else {
+                      toast.success("Deleted");
+                    }
+                    console.log(response);
+                  }}>
+                  <Trash2 class="h-4 w-4" />
+                </Button>
+              </div>
+            </Table.Cell>
           </Table.Row>
         {/each}
       </Table.Body>
@@ -80,23 +108,47 @@
         >New Redirect</Dialog.Trigger>
       <Dialog.Content class="sm:max-w-[425px]">
         <Dialog.Header>
-          <Dialog.Title>Edit profile</Dialog.Title>
+          <Dialog.Title>Create Redirect</Dialog.Title>
           <Dialog.Description>
-            Make changes to your profile here. Click save when you're done.
+            Make a new redirect! Click "create" when you're done.
           </Dialog.Description>
         </Dialog.Header>
         <div class="grid gap-4 py-4">
           <div class="grid grid-cols-4 items-center gap-4">
-            <Label for="name" class="text-right">Name</Label>
-            <Input id="name" value="Pedro Duarte" class="col-span-3" />
+            <Label for="host" class="text-right">Host</Label>
+            <Input id="host" placeholder="rick" class="col-span-3" />
           </div>
           <div class="grid grid-cols-4 items-center gap-4">
-            <Label for="username" class="text-right">Username</Label>
-            <Input id="username" value="@peduarte" class="col-span-3" />
+            <Label for="url" class="text-right">URL</Label>
+            <Input
+              id="url"
+              placeholder="https://youtu.be/dQw4w9WgXcQ"
+              class="col-span-3" />
           </div>
         </div>
         <Dialog.Footer>
-          <Button type="submit">Save changes</Button>
+          <Button
+            type="submit"
+            on:click={async () => {
+              const response = await fetch("/api/redirects/create", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  host: document.getElementById(`host`).value,
+                  url: document.getElementById(`url`).value,
+                }),
+              });
+
+              if (!response.ok) {
+                toast.error(
+                  `${(await response.text()) || response.statusText}`
+                );
+              } else {
+                toast.success("Successfully Updated!");
+              }
+            }}>Create</Button>
         </Dialog.Footer>
       </Dialog.Content>
     </Dialog.Root>
