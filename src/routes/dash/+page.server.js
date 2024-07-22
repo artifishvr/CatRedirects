@@ -4,7 +4,6 @@ import { kindeAuthClient } from '@kinde-oss/kinde-auth-sveltekit';
 import { redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
-
 export async function load({ request }) {
     const isAuthenticated = await kindeAuthClient.isAuthenticated(
         request

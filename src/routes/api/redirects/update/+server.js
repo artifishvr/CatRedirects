@@ -6,7 +6,7 @@ import { kindeAuthClient } from '@kinde-oss/kinde-auth-sveltekit';
 export async function POST({ request }) {
     const { host, url } = await request.json();
 
-    const recordtoedit = await db.select().from(redirects).where(eq(redirects.host, host + ".gaycat.online"));
+    const recordtoedit = await db.select().from(redirects).where(eq(redirects.host, host));
 
     if (!recordtoedit[0]) return new Response('Not Found', { status: 404 });
 
@@ -17,7 +17,7 @@ export async function POST({ request }) {
 
     await db.update(redirects)
         .set({ url: url })
-        .where(eq(redirects.host, host + ".gaycat.online"));
+        .where(eq(redirects.host, host));
 
 
     return new Response('Success!', {

@@ -8,6 +8,8 @@
   import { Label } from "$lib/components/ui/label/index.js";
   import { toast } from "svelte-sonner";
   import Trash2 from "lucide-svelte/icons/trash-2";
+  import ExternalLink from "lucide-svelte/icons/external-link";
+  import { invalidateAll } from "$app/navigation";
 </script>
 
 <div class="bg-zinc-900 text-white py-24 flex text-center">
@@ -33,7 +35,12 @@
         {#each data.result as domain}
           <Table.Row>
             <Table.Cell class="font-medium">
-              {domain.host.replace(".gaycat.online", "")}
+              <a href="https://{domain.host}" target="_blank">
+                <div class="flex gap-1 items-center">
+                  {domain.host.replace(".gaycat.online", "")}
+                  <ExternalLink size={16} />
+                </div>
+              </a>
             </Table.Cell>
             <Table.Cell
               ><Input
@@ -47,13 +54,12 @@
                 <Button
                   variant="secondary"
                   on:click={async () => {
-                    let host = document.getElementById(
-                      `host-${domain.id}`
-                    ).value;
                     let url = document.getElementById(`url-${domain.id}`).value;
 
                     if (url == domain.url)
                       return toast.warning("Nothing to update!");
+
+                    toast.info("Updating...");
 
                     const response = await fetch("/api/redirects/update", {
                       method: "POST",
@@ -61,7 +67,7 @@
                         "Content-Type": "application/json",
                       },
                       body: JSON.stringify({
-                        host: host,
+                        host: domain.host,
                         url: url,
                       }),
                     });
@@ -70,11 +76,14 @@
                       toast.error(`Failed to Update: ${response.statusText}`);
                     } else {
                       toast.success("Successfully Updated!");
+                      invalidateAll();
                     }
                   }}>Update</Button>
                 <Button
                   variant="destructive"
                   on:click={async () => {
+                    toast.info("Deleting...");
+
                     const response = await fetch("/api/redirects/delete", {
                       method: "POST",
                       headers: {
@@ -91,8 +100,8 @@
                       );
                     } else {
                       toast.success("Deleted");
+                      invalidateAll();
                     }
-                    console.log(response);
                   }}>
                   <Trash2 class="h-4 w-4" />
                 </Button>
@@ -102,6 +111,8 @@
         {/each}
       </Table.Body>
     </Table.Root>
+
+    <br class="pb-3" />
 
     <Dialog.Root>
       <Dialog.Trigger class={buttonVariants({ variant: "default" })}
@@ -127,28 +138,34 @@
           </div>
         </div>
         <Dialog.Footer>
-          <Button
-            type="submit"
-            on:click={async () => {
-              const response = await fetch("/api/redirects/create", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  host: document.getElementById(`host`).value,
-                  url: document.getElementById(`url`).value,
-                }),
-              });
+          <Dialog.Close>
+            <Button
+              type="submit"
+              on:click={async () => {
+                toast.info("Creating...");
 
-              if (!response.ok) {
-                toast.error(
-                  `${(await response.text()) || response.statusText}`
-                );
-              } else {
-                toast.success("Successfully Updated!");
-              }
-            }}>Create</Button>
+                const response = await fetch("/api/redirects/create", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    host: document.getElementById(`host`).value,
+                    url: document.getElementById(`url`).value,
+                  }),
+                });
+
+                if (!response.ok) {
+                  toast.error(
+                    `${(await response.text()) || response.statusText}`
+                  );
+                } else {
+                  toast.success("Successfully Updated!");
+
+                  invalidateAll();
+                }
+              }}>Create</Button>
+          </Dialog.Close>
         </Dialog.Footer>
       </Dialog.Content>
     </Dialog.Root>
