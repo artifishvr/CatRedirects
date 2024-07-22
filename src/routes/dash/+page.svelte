@@ -144,6 +144,12 @@
               on:click={async () => {
                 toast.info("Creating...");
 
+                if (
+                  document.getElementById(`host`).value == "" ||
+                  document.getElementById(`url`).value == ""
+                )
+                  return toast.error("All fields must be filled in!");
+
                 const response = await fetch("/api/redirects/create", {
                   method: "POST",
                   headers: {
