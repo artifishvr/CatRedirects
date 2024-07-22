@@ -19,10 +19,6 @@
     </h1>
     <h2 class="text-xl font-medium">Here's all your gaycat redirects.</h2>
 
-    <h3 class="text-md font-medium pb-4">
-      Missing some? Get arti to manually link legacy redirects to your account.
-    </h3>
-
     <Table.Root>
       <Table.Header>
         <Table.Row>
@@ -111,6 +107,13 @@
         {/each}
       </Table.Body>
     </Table.Root>
+    {#if data.result.length == 0}
+      <div class="flex gap-1 items-center">
+        <span class="text-gray-400 text-center"
+          >No redirects found.<br />Missing a host? Get arti to manually link
+          legacy redirects to your account.</span>
+      </div>
+    {/if}
 
     <br class="pb-3" />
 
