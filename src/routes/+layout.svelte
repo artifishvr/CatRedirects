@@ -12,7 +12,7 @@
 </script>
 
 <svelte:head>
-  <title>...</title>
+  <title>gaycat redirects</title>
 </svelte:head>
 
 <slot />
