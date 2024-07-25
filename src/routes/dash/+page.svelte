@@ -135,12 +135,17 @@
               <Dialog.Header>
                 <Dialog.Title>Link a Social Media Account</Dialog.Title>
                 <Dialog.Description>
-                  Only supports one link per redirect at this time.<br />Experimental!
-                  May be removed at any time.<br /><a
-                    href="https://rizz.zip/Desktop_2024_07_25_15_58_51_06-DNb2Ian0hDDf.mp4"
+                  Experimental! May be removed at any time.<br /> Video
+                  Tutorials for
+                  <a
+                    href="https://rizz.zip/Desktop_20240725_15585106_21-f07QRFNSpC3M.mp4"
                     target="_blank"
-                    class="underline text-blue-300"
-                    >Discord Linking (Video Tutorial)</a>
+                    class="underline text-blue-300">Discord</a>
+                  &
+                  <a
+                    href="https://rizz.zip/Desktop_20240725_16461607_22-HGeNSqLqqQLa.mp4"
+                    target="_blank"
+                    class="underline text-blue-300">Bluesky</a>
                 </Dialog.Description>
               </Dialog.Header>
               <div class="grid gap-4 py-4">
