@@ -16,6 +16,7 @@
   import { invalidateAll } from "$app/navigation";
   let linkDialogOpen = false;
   let linkPlatform = "";
+  let linkContent = "";
 </script>
 
 <div class="bg-zinc-900 text-white py-24 flex text-center">
@@ -128,6 +129,73 @@
               </div>
             </Table.Cell>
           </Table.Row>
+
+          <Dialog.Root bind:open={linkDialogOpen}>
+            <Dialog.Content class="sm:max-w-[425px]">
+              <Dialog.Header>
+                <Dialog.Title>Link a Social Media Account</Dialog.Title>
+                <Dialog.Description>
+                  Only supports one link per redirect at this time.<br />Experimental!
+                  May be removed at any time.<br /><a
+                    href="https://rizz.zip/Desktop_2024_07_25_15_58_51_06-DNb2Ian0hDDf.mp4"
+                    target="_blank"
+                    class="underline text-blue-300"
+                    >Discord Linking (Video Tutorial)</a>
+                </Dialog.Description>
+              </Dialog.Header>
+              <div class="grid gap-4 py-4">
+                <div class="grid grid-cols-4 items-center gap-4">
+                  <Label for="linkPlatform" class="text-right">Platform</Label>
+                  <Select.Root id="linkPlatform" bind:selected={linkPlatform}>
+                    <Select.Trigger class="w-[180px]">
+                      <Select.Value placeholder="Platform" />
+                    </Select.Trigger>
+                    <Select.Content>
+                      <Select.Item value="discord">Discord</Select.Item>
+                      <Select.Item value="atproto-did">Bluesky</Select.Item>
+                    </Select.Content>
+                  </Select.Root>
+                </div>
+                <div class="grid grid-cols-4 items-center gap-4">
+                  <Label for="linkContent" class="text-right">Content</Label>
+                  <Input
+                    id="linkContent"
+                    bind:value={linkContent}
+                    placeholder="dh=555230139d9019d34352c2d6af629d88960505b8"
+                    class="col-span-3" />
+                </div>
+              </div>
+              <Dialog.Footer>
+                <Dialog.Close>
+                  <Button
+                    type="submit"
+                    on:click={async () => {
+                      toast.info("Linking...");
+
+                      const response = await fetch("/api/redirects/link", {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                          content: linkContent,
+                          platform: linkPlatform,
+                          host: domain.host,
+                        }),
+                      });
+
+                      if (!response.ok) {
+                        toast.error(
+                          `${(await response.text()) || response.statusText}`
+                        );
+                      } else {
+                        toast.success("Ready to link!");
+                      }
+                    }}>Link</Button>
+                </Dialog.Close>
+              </Dialog.Footer>
+            </Dialog.Content>
+          </Dialog.Root>
         {/each}
       </Table.Body>
     </Table.Root>
@@ -206,66 +274,5 @@
     <Button variant="secondary" href="/api/auth/logout">Sign Out</Button>
   </div>
 </div>
-
-<Dialog.Root bind:open={linkDialogOpen}>
-  <Dialog.Content class="sm:max-w-[425px]">
-    <Dialog.Header>
-      <Dialog.Title>Link a Social Media Account</Dialog.Title>
-      <Dialog.Description>
-        Only supports one link per redirect at this time.<br />Experimental! May
-        be removed at any time.
-      </Dialog.Description>
-    </Dialog.Header>
-    <div class="grid gap-4 py-4">
-      <div class="grid grid-cols-4 items-center gap-4">
-        <Label for="linkPlatform" class="text-right">Platform</Label>
-        <Select.Root id="linkPlatform" bind:selected={linkPlatform}>
-          <Select.Trigger class="w-[180px]">
-            <Select.Value placeholder="Platform" />
-          </Select.Trigger>
-          <Select.Content>
-            <Select.Item value="discord">Discord</Select.Item>
-            <Select.Item value="atproto-did">Bluesky</Select.Item>
-          </Select.Content>
-        </Select.Root>
-      </div>
-      <div class="grid grid-cols-4 items-center gap-4">
-        <Label for="linkContent" class="text-right">Content</Label>
-        <Input
-          id="linkContent"
-          placeholder="dh=555230139d9019d34352c2d6af629d88960505b8"
-          class="col-span-3" />
-      </div>
-    </div>
-    <Dialog.Footer>
-      <Dialog.Close>
-        <Button
-          type="submit"
-          on:click={async () => {
-            toast.info("Linking...");
-
-            const response = await fetch("/api/redirects/link", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                content: document.getElementById(`linkContent`).value,
-                platform: linkPlatform,
-              }),
-            });
-
-            if (!response.ok) {
-              toast.error(`${(await response.text()) || response.statusText}`);
-            } else {
-              toast.success("Ready to link!");
-
-              invalidateAll();
-            }
-          }}>Link</Button>
-      </Dialog.Close>
-    </Dialog.Footer>
-  </Dialog.Content>
-</Dialog.Root>
 
 <Toaster />
