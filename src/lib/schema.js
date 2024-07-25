@@ -5,4 +5,6 @@ export const redirects = sqliteTable('redirects', {
     ownerid: text('ownerid'),
     host: text('host'),
     url: text('url'),
+    wkPrefix: text('wkPrefix'),
+    wkContent: text('wkContent'),
 })

@@ -1,15 +1,21 @@
 <script>
   export let data;
+  import { toast } from "svelte-sonner";
+  import Trash2 from "lucide-svelte/icons/trash-2";
+  import ExternalLink from "lucide-svelte/icons/external-link";
+  import Ellipsis from "lucide-svelte/icons/ellipsis";
+  import UserPen from "lucide-svelte/icons/user-pen";
   import * as Table from "$lib/components/ui/table";
   import { Button, buttonVariants } from "$lib/components/ui/button";
   import { Toaster } from "$lib/components/ui/sonner";
   import { Input } from "$lib/components/ui/input";
   import * as Dialog from "$lib/components/ui/dialog";
-  import { Label } from "$lib/components/ui/label/index.js";
-  import { toast } from "svelte-sonner";
-  import Trash2 from "lucide-svelte/icons/trash-2";
-  import ExternalLink from "lucide-svelte/icons/external-link";
+  import { Label } from "$lib/components/ui/label";
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
+  import * as Select from "$lib/components/ui/select";
   import { invalidateAll } from "$app/navigation";
+  let linkDialogOpen = false;
+  let linkPlatform = "";
 </script>
 
 <div class="bg-zinc-900 text-white py-24 flex text-center">
@@ -75,32 +81,50 @@
                       invalidateAll();
                     }
                   }}>Update</Button>
-                <Button
-                  variant="destructive"
-                  on:click={async () => {
-                    toast.info("Deleting...");
+                <DropdownMenu.Root>
+                  <DropdownMenu.Trigger
+                    class={buttonVariants({ variant: "default" })}
+                    ><Ellipsis /></DropdownMenu.Trigger>
+                  <DropdownMenu.Content>
+                    <DropdownMenu.Group>
+                      <DropdownMenu.Label>Options</DropdownMenu.Label>
+                      <DropdownMenu.Separator />
+                      <DropdownMenu.Item
+                        on:click={() => (linkDialogOpen = true)}
+                        ><UserPen class="mr-2 h-4 w-4" /><span
+                          >Link Account</span
+                        ></DropdownMenu.Item>
+                      <DropdownMenu.Item
+                        on:click={async () => {
+                          toast.info("Deleting...");
 
-                    const response = await fetch("/api/redirects/delete", {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({
-                        id: domain.id,
-                      }),
-                    });
+                          const response = await fetch(
+                            "/api/redirects/delete",
+                            {
+                              method: "POST",
+                              headers: {
+                                "Content-Type": "application/json",
+                              },
+                              body: JSON.stringify({
+                                id: domain.id,
+                              }),
+                            }
+                          );
 
-                    if (!response.ok) {
-                      toast.error(
-                        `${(await response.text()) || response.statusText}`
-                      );
-                    } else {
-                      toast.success("Deleted");
-                      invalidateAll();
-                    }
-                  }}>
-                  <Trash2 class="h-4 w-4" />
-                </Button>
+                          if (!response.ok) {
+                            toast.error(
+                              `${(await response.text()) || response.statusText}`
+                            );
+                          } else {
+                            toast.success("Deleted");
+                            invalidateAll();
+                          }
+                        }}
+                        ><Trash2 class="mr-2 h-4 w-4" /><span>Delete</span
+                        ></DropdownMenu.Item>
+                    </DropdownMenu.Group>
+                  </DropdownMenu.Content>
+                </DropdownMenu.Root>
               </div>
             </Table.Cell>
           </Table.Row>
@@ -182,4 +206,66 @@
     <Button variant="secondary" href="/api/auth/logout">Sign Out</Button>
   </div>
 </div>
+
+<Dialog.Root bind:open={linkDialogOpen}>
+  <Dialog.Content class="sm:max-w-[425px]">
+    <Dialog.Header>
+      <Dialog.Title>Link a Social Media Account</Dialog.Title>
+      <Dialog.Description>
+        Only supports one link per redirect at this time.<br />Experimental! May
+        be removed at any time.
+      </Dialog.Description>
+    </Dialog.Header>
+    <div class="grid gap-4 py-4">
+      <div class="grid grid-cols-4 items-center gap-4">
+        <Label for="linkPlatform" class="text-right">Platform</Label>
+        <Select.Root id="linkPlatform" bind:selected={linkPlatform}>
+          <Select.Trigger class="w-[180px]">
+            <Select.Value placeholder="Platform" />
+          </Select.Trigger>
+          <Select.Content>
+            <Select.Item value="discord">Discord</Select.Item>
+            <Select.Item value="atproto-did">Bluesky</Select.Item>
+          </Select.Content>
+        </Select.Root>
+      </div>
+      <div class="grid grid-cols-4 items-center gap-4">
+        <Label for="linkContent" class="text-right">Content</Label>
+        <Input
+          id="linkContent"
+          placeholder="dh=555230139d9019d34352c2d6af629d88960505b8"
+          class="col-span-3" />
+      </div>
+    </div>
+    <Dialog.Footer>
+      <Dialog.Close>
+        <Button
+          type="submit"
+          on:click={async () => {
+            toast.info("Linking...");
+
+            const response = await fetch("/api/redirects/link", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                content: document.getElementById(`linkContent`).value,
+                platform: linkPlatform,
+              }),
+            });
+
+            if (!response.ok) {
+              toast.error(`${(await response.text()) || response.statusText}`);
+            } else {
+              toast.success("Ready to link!");
+
+              invalidateAll();
+            }
+          }}>Link</Button>
+      </Dialog.Close>
+    </Dialog.Footer>
+  </Dialog.Content>
+</Dialog.Root>
+
 <Toaster />

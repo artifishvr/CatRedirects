@@ -20,7 +20,10 @@
         Anyone can register a domain, but they may not be used to attack
         protected groups or host illegal content.
       </h6>
-      <h6>Only supports redirects. More options coming soon&trade; (maybe)</h6>
+      <h6>
+        Only supports redirects (and linking them to discord or bluesky). More
+        options coming soon&trade;
+      </h6>
     </div>
   </div>
 </div>
