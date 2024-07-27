@@ -10,6 +10,7 @@
 
   import DomainRow from "$lib/components/DomainRow.svelte";
   import { invalidateAll } from "$app/navigation";
+  import { version } from "$app/environment";
   let newRedirectDialog = false;
 </script>
 
@@ -48,6 +49,11 @@
     <Button variant="default" on:click={() => (newRedirectDialog = true)}>
       New Redirect</Button>
     <Button variant="secondary" href="/api/auth/logout">Sign Out</Button>
+
+    <p class="pt-8 text-zinc-400 text-sm">
+      v{version}
+      <br />built with &lt;3 by <a href="https://github.com/artifishvr">arti</a>
+    </p>
 
     <!-- Create Redirect Dialog -->
     <Dialog.Root bind:open={newRedirectDialog}>
