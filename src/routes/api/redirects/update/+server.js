@@ -2,9 +2,12 @@ import { db } from '$lib/db';
 import { redirects } from '$lib/schema';
 import { eq } from 'drizzle-orm';
 import { kindeAuthClient } from '@kinde-oss/kinde-auth-sveltekit';
+import { isValidUrl } from '$lib/utils';
 
 export async function POST({ request }) {
     const { host, url } = await request.json();
+
+    if (!isValidUrl(url)) return new Response('That doesn\'t look like a valid URL!', { status: 400 });
 
     const recordtoedit = await db.select().from(redirects).where(eq(redirects.host, host));
 

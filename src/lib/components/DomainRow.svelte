@@ -68,7 +68,7 @@
           });
 
           if (!response.ok) {
-            toast.error(`Failed to Update: ${await response.text()}`);
+            toast.error(`${await response.text()}`);
           } else {
             toast.success("Successfully Updated!");
             edited = false;

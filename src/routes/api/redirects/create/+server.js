@@ -2,9 +2,13 @@ import { db } from '$lib/db';
 import { redirects } from '$lib/schema';
 import { eq } from 'drizzle-orm';
 import { kindeAuthClient } from '@kinde-oss/kinde-auth-sveltekit';
+import { isValidUrl } from '$lib/utils';
 
 export async function POST({ request }) {
     const { host, url } = await request.json();
+
+    if (!host.match(/^[a-zA-Z0-9-]+$/)) return new Response('Invalid host! You can only use alphanumeric characters and dashes.', { status: 400 });
+    if (!isValidUrl(url)) return new Response('That doesn\'t look like a valid URL!', { status: 400 });
 
     if (!await kindeAuthClient.isAuthenticated(request)) return new Response('Not authenticated', { status: 401 });
 
