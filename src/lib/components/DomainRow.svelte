@@ -17,6 +17,7 @@
   import { toast } from "svelte-sonner";
   import { invalidateAll } from "$app/navigation";
 
+  let deleteDialogOpen = false;
   let linkDialogOpen = false;
   let linkPlatform = "";
   let linkContent = "";
@@ -30,6 +31,8 @@
       edited = false;
     }
   }
+
+  async function deleteRedirect() {}
 </script>
 
 <Table.Row>
@@ -88,27 +91,7 @@
             <DropdownMenu.Item on:click={() => (linkDialogOpen = true)}
               ><UserPen class="mr-2 h-4 w-4" /><span>Link Account</span
               ></DropdownMenu.Item>
-            <DropdownMenu.Item
-              on:click={async () => {
-                toast.info("Deleting...");
-
-                const response = await fetch("/api/redirects/delete", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    id: domain.id,
-                  }),
-                });
-
-                if (!response.ok) {
-                  toast.error(`${await response.text()}`);
-                } else {
-                  toast.success("Deleted");
-                  invalidateAll();
-                }
-              }}
+            <DropdownMenu.Item on:click={() => (deleteDialogOpen = true)}
               ><Trash2 class="mr-2 h-4 w-4" /><span>Delete</span
               ></DropdownMenu.Item>
           </DropdownMenu.Group>
@@ -117,6 +100,46 @@
     {/if}
   </Table.Cell>
 </Table.Row>
+
+<!-- Delete Confirmation Dialog -->
+<Dialog.Root bind:open={deleteDialogOpen}>
+  <Dialog.Content class="sm:max-w-[425px]">
+    <Dialog.Header>
+      <Dialog.Title>Delete {domain.host}</Dialog.Title>
+      <Dialog.Description>
+        Are you sure you want to delete this domain?<br /> This will immediately
+        allow anyone else to claim it.
+      </Dialog.Description>
+    </Dialog.Header>
+    <Dialog.Footer>
+      <Dialog.Close>
+        <Button
+          type="submit"
+          variant="destructive"
+          on:click={async () => {
+            toast.info("Deleting...");
+
+            const response = await fetch("/api/redirects/delete", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                id: domain.id,
+              }),
+            });
+
+            if (!response.ok) {
+              toast.error(`${await response.text()}`);
+            } else {
+              toast.success("Deleted");
+              invalidateAll();
+            }
+          }}>Delete</Button>
+      </Dialog.Close>
+    </Dialog.Footer>
+  </Dialog.Content>
+</Dialog.Root>
 
 <!-- Link Account Dialog -->
 <Dialog.Root bind:open={linkDialogOpen}>
