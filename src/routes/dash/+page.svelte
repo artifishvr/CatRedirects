@@ -12,6 +12,8 @@
   import { invalidateAll } from "$app/navigation";
   import { version } from "$app/environment";
   let newRedirectDialog = false;
+  let newRedirectUrl = "";
+  let newRedirectHost = "";
 </script>
 
 <div class="bg-zinc-900 text-white py-24 flex text-center">
@@ -67,14 +69,19 @@
         <div class="grid gap-4 py-4">
           <div class="grid grid-cols-4 items-center gap-4">
             <Label for="host" class="text-right">Host</Label>
-            <Input id="host" placeholder="rick" class="col-span-3" />
+            <Input
+              id="host"
+              placeholder="rick"
+              class="col-span-3"
+              bind:value={newRedirectHost} />
           </div>
           <div class="grid grid-cols-4 items-center gap-4">
             <Label for="url" class="text-right">URL</Label>
             <Input
               id="url"
               placeholder="https://youtu.be/dQw4w9WgXcQ"
-              class="col-span-3" />
+              class="col-span-3"
+              bind:value={newRedirectUrl} />
           </div>
         </div>
         <Dialog.Footer>
@@ -84,10 +91,7 @@
               on:click={async () => {
                 toast.info("Creating...");
 
-                if (
-                  document.getElementById(`host`).value == "" ||
-                  document.getElementById(`url`).value == ""
-                )
+                if (newRedirectHost == "" || newRedirectUrl == "")
                   return toast.error("All fields must be filled in!");
 
                 const response = await fetch("/api/redirects/create", {
@@ -96,18 +100,18 @@
                     "Content-Type": "application/json",
                   },
                   body: JSON.stringify({
-                    host: document.getElementById(`host`).value,
-                    url: document.getElementById(`url`).value,
+                    host: newRedirectHost,
+                    url: newRedirectUrl,
                   }),
                 });
 
                 if (!response.ok) {
-                  toast.error(
-                    `${(await response.text()) || response.statusText}`
-                  );
+                  toast.error(`${await response.text()}`);
                 } else {
                   toast.success("Successfully Updated!");
 
+                  newRedirectHost = "";
+                  newRedirectUrl = "";
                   invalidateAll();
                 }
               }}>Create</Button>

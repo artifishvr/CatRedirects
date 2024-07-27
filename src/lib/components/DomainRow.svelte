@@ -181,6 +181,9 @@
               toast.error(`${await response.text()}`);
             } else {
               toast.success("Ready to link!");
+
+              linkPlatform = "";
+              linkContent = "";
             }
           }}>Link</Button>
       </Dialog.Close>

@@ -6,8 +6,6 @@ import { kindeAuthClient } from '@kinde-oss/kinde-auth-sveltekit';
 export async function POST({ request }) {
     const { platform, content, host } = await request.json();
 
-    console.log(content);
-
     const recordtoedit = await db.select().from(redirects).where(eq(redirects.host, host));
 
     if (!recordtoedit[0]) return new Response('Not Found', { status: 404 });
