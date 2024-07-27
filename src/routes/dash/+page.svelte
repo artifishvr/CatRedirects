@@ -114,7 +114,14 @@
                       <DropdownMenu.Label>Options</DropdownMenu.Label>
                       <DropdownMenu.Separator />
                       <DropdownMenu.Item
-                        on:click={() => (linkDialogOpen = true)}
+                        on:click={() => {
+                          if (data.result.length >= 2)
+                            return toast.error(
+                              "Account linking is currently broken when you have multiple domains. We're working on it!"
+                            );
+
+                          linkDialogOpen = true;
+                        }}
                         ><UserPen class="mr-2 h-4 w-4" /><span
                           >Link Account</span
                         ></DropdownMenu.Item>
