@@ -5,6 +5,7 @@
   import ExternalLink from "lucide-svelte/icons/external-link";
   import Ellipsis from "lucide-svelte/icons/ellipsis";
   import UserPen from "lucide-svelte/icons/user-pen";
+  import RefreshCw from "lucide-svelte/icons/refresh-cw";
   import * as Table from "$lib/components/ui/table";
   import { Button, buttonVariants } from "$lib/components/ui/button";
   import { Toaster } from "$lib/components/ui/sonner";
@@ -51,16 +52,30 @@
                 type="text"
                 placeholder="URL"
                 class="max-w-xs"
-                value={domain.url} /></Table.Cell>
+                value={domain.url}
+                on:input={(e) => {
+                  if (e.target.value != domain.url) {
+                    document.getElementById(
+                      `update-${domain.id}`
+                    ).style.display = "block";
+                    document.getElementById(`menu-${domain.id}`).style.display =
+                      "none";
+                  } else {
+                    document.getElementById(
+                      `update-${domain.id}`
+                    ).style.display = "none";
+                    document.getElementById(`menu-${domain.id}`).style.display =
+                      "block";
+                  }
+                }} /></Table.Cell>
             <Table.Cell class="text-right">
               <div class="flex gap-2">
                 <Button
-                  variant="secondary"
+                  variant="default"
+                  class="hidden w-16"
+                  id={`update-${domain.id}`}
                   on:click={async () => {
                     let url = document.getElementById(`url-${domain.id}`).value;
-
-                    if (url == domain.url)
-                      return toast.warning("Nothing to update!");
 
                     toast.info("Updating...");
 
@@ -79,13 +94,21 @@
                       toast.error(`Failed to Update: ${response.statusText}`);
                     } else {
                       toast.success("Successfully Updated!");
+                      document.getElementById(
+                        `update-${domain.id}`
+                      ).style.display = "none";
+                      document.getElementById(
+                        `menu-${domain.id}`
+                      ).style.display = "block";
                       invalidateAll();
                     }
-                  }}>Update</Button>
+                  }}>
+                  <RefreshCw size={24} class="w-full" /></Button>
                 <DropdownMenu.Root>
                   <DropdownMenu.Trigger
-                    class={buttonVariants({ variant: "default" })}
-                    ><Ellipsis /></DropdownMenu.Trigger>
+                    class={buttonVariants({ variant: "secondary" }) + " w-16"}
+                    id={`menu-${domain.id}`}>
+                    <Ellipsis size={24} class="w-full" /></DropdownMenu.Trigger>
                   <DropdownMenu.Content>
                     <DropdownMenu.Group>
                       <DropdownMenu.Label>Options</DropdownMenu.Label>
