@@ -1,19 +1,20 @@
 <script>
   export let domain;
+
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
   import * as Select from "$lib/components/ui/select";
-  import Trash2 from "lucide-svelte/icons/trash-2";
-  import ExternalLink from "lucide-svelte/icons/external-link";
-  import Ellipsis from "lucide-svelte/icons/ellipsis";
-  import UserPen from "lucide-svelte/icons/user-pen";
-  import RefreshCw from "lucide-svelte/icons/refresh-cw";
   import * as Table from "$lib/components/ui/table";
   import * as Dialog from "$lib/components/ui/dialog";
   import { Input } from "$lib/components/ui/input";
   import { Button, buttonVariants } from "$lib/components/ui/button";
   import { Label } from "$lib/components/ui/label";
-  import { toast } from "svelte-sonner";
+  import Trash2 from "lucide-svelte/icons/trash-2";
+  import ExternalLink from "lucide-svelte/icons/external-link";
+  import Ellipsis from "lucide-svelte/icons/ellipsis";
+  import UserPen from "lucide-svelte/icons/user-pen";
+  import RefreshCw from "lucide-svelte/icons/refresh-cw";
 
+  import { toast } from "svelte-sonner";
   import { invalidateAll } from "$app/navigation";
 
   let linkDialogOpen = false;
@@ -67,7 +68,7 @@
           });
 
           if (!response.ok) {
-            toast.error(`Failed to Update: ${response.statusText}`);
+            toast.error(`Failed to Update: ${await response.text()}`);
           } else {
             toast.success("Successfully Updated!");
             edited = false;
@@ -102,9 +103,7 @@
                 });
 
                 if (!response.ok) {
-                  toast.error(
-                    `${(await response.text()) || response.statusText}`
-                  );
+                  toast.error(`${await response.text()}`);
                 } else {
                   toast.success("Deleted");
                   invalidateAll();
@@ -179,7 +178,7 @@
             });
 
             if (!response.ok) {
-              toast.error(`${(await response.text()) || response.statusText}`);
+              toast.error(`${await response.text()}`);
             } else {
               toast.success("Ready to link!");
             }
