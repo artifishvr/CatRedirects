@@ -16,6 +16,8 @@ export async function POST({ request }) {
     if (recordtoedit[0]?.ownerid != userInfo?.id) return new Response('No permissions to edit this', { status: 403 });
 
     if (platform.value != "discord" && platform.value != "atproto-did") return new Response('Invalid platform', { status: 400 });
+    if (platform.value == "discord" && !content.match(/^dh=.{40}$/)) return new Response('Invalid content. Make sure it\'s exactly copied from the discord app. (Watch the video tutorial if you\'re not sure)', { status: 400 });
+    if (platform.value == "atproto-did" && !content.match(/^did:plc:.{24}$/)) return new Response('Invalid content. Make sure it\'s exactly copied from bluesky. (Watch the video tutorial if you\'re not sure)', { status: 400 });
 
     await db.update(redirects)
         .set({ wkPrefix: platform.value, wkContent: content })

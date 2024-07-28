@@ -31,8 +31,6 @@
       edited = false;
     }
   }
-
-  async function deleteRedirect() {}
 </script>
 
 <Table.Row>
