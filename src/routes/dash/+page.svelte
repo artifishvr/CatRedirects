@@ -16,7 +16,7 @@
   let newRedirectHost = "";
 </script>
 
-<div class="bg-zinc-900 text-white py-24 flex text-center">
+<div class="bg-zinc-950 text-white py-24 flex text-center">
   <div class="m-auto p-6">
     <h1 class="text-3xl font-bold pb-1">
       Hi {data.userInfo.given_name}!
