@@ -1,6 +1,7 @@
 <script>
   import "../app.pcss";
   import { onMount } from "svelte";
+  import "@fontsource-variable/dm-sans";
 
   onMount(() => {
     const analyticsScript = document.createElement("script");
