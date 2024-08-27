@@ -50,9 +50,11 @@
       </div>
     {/if}
 
-    <Button variant="default" on:click={() => (newRedirectDialog = true)}>
-      New Redirect</Button>
-    <Button variant="secondary" href="/api/auth/logout">Sign Out</Button>
+    <div class="pt-2">
+      <Button variant="default" on:click={() => (newRedirectDialog = true)}>
+        New Redirect</Button>
+      <Button variant="secondary" href="/api/auth/logout">Sign Out</Button>
+    </div>
 
     <p class="pt-8 text-zinc-400 text-sm">
       {#if data.result.length !== 0}
