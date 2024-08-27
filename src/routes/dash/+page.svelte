@@ -40,7 +40,7 @@
 
     {#if data.result.length == 0}
       <div class="flex gap-1 items-center">
-        <span class="text-gray-400 text-center py-3 w-full"
+        <span class="text-zinc-400 text-center py-3 w-full text-lg"
           >No redirects found.<br />Legacy redirects can be added by contacting
           us via
           <a href="mailto:support@gaycat.online" class="text-blue-300 underline"
@@ -55,15 +55,18 @@
     <Button variant="secondary" href="/api/auth/logout">Sign Out</Button>
 
     <p class="pt-8 text-zinc-400 text-sm">
-      need help? reach out via
-      <a href="mailto:support@gaycat.online" class="text-blue-300 underline"
-        >support@gaycat.online</a>
-      or
-      <a
-        href="https://github.com/artifishvr/catredirects/issues"
-        target="_blank"
-        class="text-blue-300 underline">GitHub</a
-      ><br /><br />
+      {#if data.result.length !== 0}
+        need help? reach out via
+        <a href="mailto:support@gaycat.online" class="text-blue-300 underline"
+          >support@gaycat.online</a>
+        or
+        <a
+          href="https://github.com/artifishvr/catredirects/issues"
+          target="_blank"
+          class="text-blue-300 underline">GitHub</a>
+        <br />
+      {/if}
+
       v{version}
       <br />with &lt;3 by
       <a
