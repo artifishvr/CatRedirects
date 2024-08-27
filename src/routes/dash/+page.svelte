@@ -54,7 +54,10 @@
 
     <p class="pt-8 text-zinc-400 text-sm">
       v{version}
-      <br />built with &lt;3 by <a href="https://github.com/artifishvr">arti</a>
+      <br />with &lt;3 by
+      <a
+        href="https://arti.gay/?ref=gaycatbackend"
+        class="text-blue-300 underline">arti</a>
     </p>
 
     <!-- Create Redirect Dialog -->

@@ -11,9 +11,7 @@
     <Button href="/dash">Dashboard</Button>
   {:else}
     <div>
-      <Button href="/api/auth/login" class="mx-2">Sign in</Button>
-      <Button href="/api/auth/register" variant="secondary" class="mx-2"
-        >Sign up</Button>
+      <Button href="/auth" class="mx-2">Login/Signup</Button>
     </div>
   {/if}
 
