@@ -19,7 +19,7 @@
 <div class="bg-zinc-950 text-white py-24 flex text-center">
   <div class="m-auto p-6">
     <h1 class="text-3xl font-bold pb-1">
-      Hi {data.userInfo.given_name}!
+      Hi{data.userInfo.given_name ? " " + data.userInfo.given_name : ""}!
     </h1>
     <h2 class="text-xl font-medium">Here's all your gaycat redirects.</h2>
 
@@ -40,19 +40,30 @@
 
     {#if data.result.length == 0}
       <div class="flex gap-1 items-center">
-        <span class="text-gray-400 text-center"
-          >No redirects found.<br />Missing a host? Get arti to manually link
-          legacy redirects to your account.</span>
+        <span class="text-gray-400 text-center py-3 w-full"
+          >No redirects found.<br />Legacy redirects can be added by contacting
+          us via
+          <a href="mailto:support@gaycat.online" class="text-blue-300 underline"
+            >email</a
+          >.
+        </span>
       </div>
     {/if}
-
-    <br class="pb-3" />
 
     <Button variant="default" on:click={() => (newRedirectDialog = true)}>
       New Redirect</Button>
     <Button variant="secondary" href="/api/auth/logout">Sign Out</Button>
 
     <p class="pt-8 text-zinc-400 text-sm">
+      need help? reach out via
+      <a href="mailto:support@gaycat.online" class="text-blue-300 underline"
+        >support@gaycat.online</a>
+      or
+      <a
+        href="https://github.com/artifishvr/catredirects/issues"
+        target="_blank"
+        class="text-blue-300 underline">GitHub</a
+      ><br /><br />
       v{version}
       <br />with &lt;3 by
       <a
