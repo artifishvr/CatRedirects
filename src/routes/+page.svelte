@@ -12,6 +12,7 @@
   {:else}
     <div>
       <Button href="/auth" class="mx-2">Login/Signup</Button>
+      <Button href="/demo" class="mx-2" variant="secondary">Demo</Button>
     </div>
   {/if}
 

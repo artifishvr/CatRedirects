@@ -61,11 +61,6 @@
         need help? reach out via
         <a href="mailto:support@gaycat.online" class="text-blue-300 underline"
           >support@gaycat.online</a>
-        or
-        <a
-          href="https://github.com/artifishvr/catredirects/issues"
-          target="_blank"
-          class="text-blue-300 underline">GitHub</a>
         <br />
       {/if}
 

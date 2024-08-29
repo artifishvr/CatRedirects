@@ -1,14 +1,8 @@
-import { kindeAuthClient } from '@kinde-oss/kinde-auth-sveltekit';
-import { redirect } from '@sveltejs/kit';
+import { kindeAuthClient } from "@kinde-oss/kinde-auth-sveltekit";
 
 export async function load({ request }) {
-    const isAuthenticated = await kindeAuthClient.isAuthenticated(
-        request
-    );
-
-    if (isAuthenticated) redirect(302, '/dash');
-
-    return {
-        isAuthenticated
-    };
+  const isAuthenticated = await kindeAuthClient.isAuthenticated(request);
+  return {
+    isAuthenticated,
+  };
 }
