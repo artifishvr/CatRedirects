@@ -27,10 +27,10 @@
     </h6>
   </div>
 
-  <p class="absolute bottom-0 text-zinc-400 text-sm mb-8">
+  <!-- <p class="absolute bottom-0 text-zinc-400 text-sm mb-8">
     with ❤️ by <a
       href="https://arti.gay"
       target="_blank"
       class="text-blue-300 underline">arti</a>
-  </p>
+  </p> -->
 </div>
