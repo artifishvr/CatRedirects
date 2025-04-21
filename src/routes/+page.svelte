@@ -16,15 +16,10 @@
         </div>
     {/if}
 
-    <div class="text-sm text-gray-300 pt-8">
+    <div class="text-md text-gray-300 pt-8">
         <h6>
             Signups are now closed. Anyone that already has an account can still
-            register a domain, but they may not be used to attack protected
-            groups or host illegal content.
-        </h6>
-        <h6>
-            Only supports redirects (and linking them to discord or bluesky).
-            More options coming soon&trade;
+            register a domain, for now.
         </h6>
     </div>
 
